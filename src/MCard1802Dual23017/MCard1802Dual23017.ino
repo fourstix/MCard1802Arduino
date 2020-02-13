@@ -1,7 +1,8 @@
 /*
  * Arduino based Hex Keypad digital input and Adafruit 7
  * Segment backpack used to show digital output for an
- * 1802 Membership card using an MCP23017 for I2C communication.
+ * 1802 Membership card using two MCP23017's for I2C 
+ * communication.
  * 
  * Copyright (c) 2020 by Gaston Williams
  * 
@@ -48,7 +49,10 @@
 #define DEBUG 0
 
 //I2C Address for first MCP23017
-#define MCP_ADDR  0x20
+#define MCP1_ADDR  0x20
+
+//I2C Address for second MCP23017
+#define MCP2_ADDR  0x21
 
 //I2C Address to Seven Segment LED Backpack
 #define DISPLAY_ADDR  0x70
@@ -75,11 +79,17 @@
 //Negative logic: must set bit high when /EF4 on D13 is false (HIGH)
 #define EF4_PIN  13
 
-//Define status input pins
-#define  WAIT_PIN 2
-#define CLEAR_PIN 3
-#define     Q_PIN 4
-#define    MP_PIN 5 
+////Define status input pins
+//#define  WAIT_PIN 2
+//#define CLEAR_PIN 3
+//#define     Q_PIN 4
+//#define    MP_PIN 5 
+
+//Define Status bits
+#define WAIT_BIT  0x01
+#define CLEAR_BIT 0x02
+#define Q_BIT     0x04
+#define MP_BIT    0x08
 
 //Space character used for invalid key input
 #define NO_KEY_CHAR ' '
@@ -93,11 +103,14 @@ byte data_bus = 0x00;
 //used to indicate the memory should be protected from writes (read-only)
 boolean mem_protect = false;
 
-//cdp1802 Wait line
+//cdp1802 Load Switch
 boolean load_1802 = false;
 
-//cdp1802 Clear line
+//cdp1802 Run Switch
 boolean run_1802 = false;
+
+//flag for cdp1802 load mode
+boolean load_mode = false;
 
 //Q output bit
 boolean q_bit = false;
@@ -109,10 +122,8 @@ uint16_t key_buffer = 0x00;
 byte data_hi = 0x00;
 byte data_lo = 0x00;
 
-//bytes for Port output
-byte data_d = 0x00;
-byte data_b = 0x00;
-
+//address byte for load display
+byte load_address = 0x00;
 
 //key to send to MCP23017 Port A
 byte key_data = 0x00;
@@ -133,8 +144,9 @@ char c_input = NO_KEY_CHAR;
 //Allow character input from serial
 boolean allow_serial = true;
 
-//Define MCP23017 
-MCP23017 mcp = MCP23017(MCP_ADDR);
+//Define MCP23017's
+MCP23017 mcp1 = MCP23017(MCP1_ADDR);
+MCP23017 mcp2 = MCP23017(MCP2_ADDR);
 
 //Setup 4 digit 7 segment hex display
 Adafruit_7segment sevenseg = Adafruit_7segment();
@@ -308,22 +320,53 @@ void blankBackpack() {
 
 //Set all the status flags from their repective pin
 void set1802Status() {
-  //Negative logic: Load is true when pin low
-  load_1802   = !digitalRead(WAIT_PIN);
-  //Run follows Clear pin
-  run_1802  = digitalRead(CLEAR_PIN);
+  //Get the control line status from MCP23017
+  byte control_data = mcp2.readPort(MCP23017_PORT::B);
+  boolean value = false;
+
+  #if DEBUG
+    Serial.print(F("Control lines: "));
+    print2Hex(control_data);
+    Serial.println();
+  #endif
   
-  q_bit       = digitalRead(Q_PIN);
-  mem_protect = digitalRead(MP_PIN);
+  //Negative logic: Load is true when wait bit low
+  //Clear all bits but Wait and negate boolean value
+  load_1802 = !(control_data & WAIT_BIT);
+  
+  //Run follows Clear bit
+  run_1802 = control_data & CLEAR_BIT;
+  
+
+  q_bit = control_data & Q_BIT;
+
+  mem_protect = control_data & MP_BIT;
+  
+  //Set the flag to indicate load mode
+  load_mode = (load_1802 && !run_1802);
 } //set1802Status
 
 // Show status on 4 digit Seven segment display
 void printBackpackStatus() {
   byte hex_digit = 0x00;
+  if (load_mode) {
+    //Print first hex digit of address byte with run bit as decimal point
+    hex_digit = (load_address >> 4) & NIBBLE_MASK;
+    sevenseg.writeDigitNum(0, hex_digit, run_1802);
 
-  // keep first two digits blank with wait and clear as decimal points
-  sevenseg.writeDigitRaw(0, run_1802 ? 0x80 : 0x00);  
-  sevenseg.writeDigitRaw(1, load_1802 ? 0x80 : 0x00);    
+    //Print second hex digit of data_bus byte with Memory Protect as decimal
+    hex_digit = load_address & NIBBLE_MASK;
+    sevenseg.writeDigitNum(1, hex_digit, load_1802);    
+
+    //Turn on colon
+    sevenseg.drawColon(true);  
+  } else {
+    // keep first two digits blank with wait and clear as decimal points
+    sevenseg.writeDigitRaw(0, run_1802 ? 0x80 : 0x00);  
+    sevenseg.writeDigitRaw(1, load_1802 ? 0x80 : 0x00);    
+    //turn off colon
+    sevenseg.drawColon(false);
+  } //if-else load_mode
 
   //Print first hex digit of data_bus byte with Q bit as decimal point
   hex_digit = (data_bus >> 4) & NIBBLE_MASK;
@@ -343,14 +386,9 @@ void printBackpackStatus() {
  *    Arduino Pin           1802 Membership Card                  
  *      D13 (Output)        /EF4    P1 - 27
  *      
- *      D5  (Input)           MP    (Memory Protect)
- *      D4  (Input)           Q     P1-12
- *      D3  (Input)         /CLEAR  P1-28
- *      D2  (Input)         /WAIT   P1-29
- *      
  *    Analog pin for Digital Input
- *      A0                  /RDY from hex Keypad
- *      A1                  Input Button
+ *      A0 (Input)          /RDY from hex Keypad
+ *      A1 (Input)          Input Button
  *      
  *    I2C pins for Qwiic Keypad  
  *      A4 (SDA)              
@@ -362,14 +400,23 @@ void setup() {
   //Setup MCP23017
   Wire.begin();
   
-  //Set up MCP23017
-  mcp.init();
-  mcp.portMode(MCP23017_PORT::A, 0);         //Port A as ouput
-  mcp.portMode(MCP23017_PORT::B, 0b11111111);//Port B as input
+  //Set up first MCP23017
+  mcp1.init();
+  mcp1.portMode(MCP23017_PORT::A, 0);         //Port A as output
+  mcp1.portMode(MCP23017_PORT::B, 0b11111111);//Port B as input
 
   //Initialize GPIO ports
-  mcp.writeRegister(MCP23017_REGISTER::GPIOA, 0x00);
-  mcp.writeRegister(MCP23017_REGISTER::GPIOB, 0x00);
+  mcp1.writeRegister(MCP23017_REGISTER::GPIOA, 0x00);
+  mcp1.writeRegister(MCP23017_REGISTER::GPIOB, 0x00);
+
+  //Set up second MCP23017
+  mcp2.init();
+  mcp2.portMode(MCP23017_PORT::A, 0b11111111);//Port A as input
+  mcp2.portMode(MCP23017_PORT::B, 0b11111111);//Port B as input
+
+  //Initialize GPIO ports
+  mcp2.writeRegister(MCP23017_REGISTER::GPIOA, 0x00);
+  mcp2.writeRegister(MCP23017_REGISTER::GPIOB, 0x00);
 
   // Set up the Qwiic Keypad communication
   hexKeypad.begin();
@@ -383,11 +430,11 @@ void setup() {
   //Set up Input flag /EF4 pin
   pinMode(EF4_PIN, OUTPUT);
 
-  //Initialize status pins
-  pinMode(WAIT_PIN, INPUT);
-  pinMode(CLEAR_PIN, INPUT);
-  pinMode(Q_PIN, INPUT);
-  pinMode(MP_PIN, INPUT);
+//  //Initialize status pins
+//  pinMode(WAIT_PIN, INPUT);
+//  pinMode(CLEAR_PIN, INPUT);
+//  pinMode(Q_PIN, INPUT);
+//  pinMode(MP_PIN, INPUT);
   
   //Setup the Seven Segment Status Display
   sevenseg.begin(DISPLAY_ADDR);
@@ -402,9 +449,8 @@ void setup() {
 } //setup
 
 /*
- * MCard1802Mcp23017 - Update display to show status of
- * Run and Load input buttons, rather than /CLEAR, /WAIT
- * states. 
+ * MCard1802Dual - Update display during load mode
+ * to show the address lower byte.
  * 
  * Data is read from Input port B on the MCP23017 from
  * the Data Output port on the 1802 Membership Card. 
@@ -415,8 +461,9 @@ void setup() {
  * Control lines (/CLEAR, /WAIT, Q and MP) are read from 
  * Arduino pins.
  * 
- * MCP23017 Pin     1802 Membership Card
- * Outputs:           Data In: 
+ * First MCP23017 
+ * Pin             1802 Membership Card
+ * Port A Outputs:    Data In: 
  *  28 - GPA7         P1-15   In7 
  *  27 - GPA6         P1-16   In6
  *  26 - GPA5         P1-17   In5
@@ -426,7 +473,7 @@ void setup() {
  *  22 - GPA1         P1-21   In1
  *  21 - GPA0         P1-22   In0
  *  
- *  Inputs:           Data Out:
+ *  Port B Inputs:    Data Out:
  *   8 - GPB7         P1-9    Out7
  *   7 - GPB6         P1-8    Out6
  *   6 - GPB5         P1-7    Out5
@@ -442,6 +489,41 @@ void setup() {
  *  17 - A2 (to GND for I2C address 0x20)
  *  16 - A1 (to GND for I2C address 0x20) 
  *  15 - A0 (to GND for I2C address 0x20)
+ *  
+ *  13 - SDA (to Arduino Pin A4, SDA)
+ *  12 - SCL (to Arduino Pin A5, SCL)
+ *  
+ *   9 VDD to +VDD
+ *   8 GND to GND
+ *   
+ * Second MCP23017 
+ * Pin             1802 Membership Card
+ * Port A Inputs:  Memory Address Bus:   
+ *  28 - GPA7         U2, Pin3  MA7
+ *  27 - GPA6         U2, Pin4  MA6
+ *  26 - GPA5         U2, Pin5  MA5
+ *  25 - GPA4         U2, Pin6  MA4
+ *  24 - GPA3         U2, Pin7  MA3
+ *  23 - GPA2         U2, Pin8  MA2
+ *  22 - GPA1         U2, Pin9  MA1
+ *  21 - GPA0         U2, Pin10 MA0
+ *  
+ *  Port B Inputs:    Control line:
+ *   8 - GPB7         N.C.
+ *   7 - GPB6         N.C.
+ *   6 - GPB5         N.C.
+ *   5 - GPB4         N.C.
+ *   4 - GPB3         U9, Pin 5 MP
+ *   3 - GPB2         P1-12     Q
+ *   2 - GPB1         P1-28   /Clear
+ *   1 - GPB0         P1-29    Out0
+ *  
+ *  Other Pin connections
+ *  
+ *  18 - Reset (to +VDD)
+ *  17 - A2 (to GND for I2C address 0x21)
+ *  16 - A1 (to GND for I2C address 0x21) 
+ *  15 - A0 (to +VDD for I2C address 0x21)
  *  
  *  13 - SDA (to Arduino Pin A4, SDA)
  *  12 - SCL (to Arduino Pin A5, SCL)
@@ -478,7 +560,7 @@ void loop() {
       print2Hex(key_data);
       Serial.println(" to data bus.");
     #endif
-    mcp.writeRegister(MCP23017_REGISTER::GPIOA, key_data);
+    mcp1.writeRegister(MCP23017_REGISTER::GPIOA, key_data);
     old_key_data = key_data;
   } //if key_data != old_key_data
 
@@ -506,7 +588,7 @@ void loop() {
   //Save previous data
   old_data_bus = data_bus;
   //Read the input data
-  data_bus = mcp.readPort(MCP23017_PORT::B);
+  data_bus = mcp1.readPort(MCP23017_PORT::B);
 
   #if DEBUG
     if (data_bus != old_data_bus) {
@@ -519,6 +601,16 @@ void loop() {
   
   //update status flags
   set1802Status();
+
+  //get the address byte for load display from Port A
+  if (load_mode) {
+    load_address = mcp2.readPort(MCP23017_PORT::A);
+    #if DEBUG
+      Serial.print(F("Address byte: "));
+      print2Hex(load_address);
+      Serial.println();
+    #endif 
+  } //if load_mode
   
   //update display  
   printBackpackStatus();  
