@@ -20,8 +20,8 @@ A very good source of information on the RCA 1802 chip and Cosmac Elf computer c
 [CosmacElf web page.](http://www.cosmacelf.com) The 1802 was a fantastic microprocessor that still has quite a 
 dedicated following today.
 
-The 1802 Membership card is available from Lee Hart on his [website.](http://www.sunrise-ev.com/1802.htm)  Additional document
-and other information are availble from Herb Johnson's [1802 Membership Card wesite.] (http://www.retrotechnology.com/memship/memship.html)
+The 1802 Membership card is available from Lee Hart on his [website.](http://www.sunrise-ev.com/1802.htm)  
+Additional documentation and other information are availble from Herb Johnson's [1802 Membership Card wesite.] (http://www.retrotechnology.com/memship/memship.html)
 
 The Sparkfun [Qwiic](https://www.sparkfun.com/qwiic) interface is a 3.3V I2C based interface that makes
 it very easy to connect various hardware to the Arduiono.  
@@ -42,7 +42,8 @@ for more information.
 
 A Qwiic hexadecimal keypad created from a 4x4 keypad and a 3.3v/8MHz Arduino pro-mini can also be used.
 Details about the hexadecimal keypad including firmware are available at the 
-[fourstix/Hex_Keypad_Arduino_Library] (https://github.com/fourstix/Hex_Keypad_Arduino_Library) git hub repsository.
+[fourstix/Hex_Keypad_Arduino_Library](https://github.com/fourstix/Hex_Keypad_Arduino_Library)
+git hub repsository.
 
 This code simulates a cdp1861 Pixi video chip, using an Arduino 5v/16MHz Pro-mini and other hardware.
 This code uses a video ram buffer with a 128 x 64 graphics display supported by the
@@ -57,6 +58,10 @@ U8G2 supports many kinds of 128 x 64 displays.  A list of supported displays is 
 
 For example, this [SSD1306 I2C 128 x64 OLED display](https://www.adafruit.com/product/938) available
 from Adadruit works fine with the Qwiic interface and is supported by Uthe 8G2 graphics library.
+
+This code uses the MCP23017 Arduino library by Bertrand Lemasle availble on
+[github.](https://github.com/blemasle/arduino-mcp23017)
+
 
  
 Sample Configurations
@@ -74,8 +79,8 @@ on different combinations of Qwiic compatible hardware.
     <td>Close up of SH1106 128x64 OLED display with 1802 Membership card running Cosmac Elf Spaceship program.</td>
   </tr>
   <tr align="center">
-   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Mcp23017.JPG"></td>
-   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Dual23017.JPG"></td> 
+   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Mcp23017.jpg"></td>
+   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Dual23017.jpg"></td> 
   </tr>
   <tr align="center">
     <td>1802 Membership card with MCP23017, Hexadecimal 4x4 Keypad, Adafruit 7 Segment backpack and an SH1106 128x64 OLED display.</td>
@@ -142,18 +147,12 @@ Adadruit LED Backpack Library
 Copyright (c) 2012 Adafruit Industries
 Written by Limor Fried/Ladyada, 2012 
 
-Adafruit Fram I2C Library
-Copyright (c) 2012 Adafruit Industries
-Written by KTown, 2013
+MCP23017 Arduino Library
+Copyright (c) 2017 Bertrand Lemasle
 
-1802 Simulation for KIM-UNO hardware
-Copyright (c) 2017 by Al Williams
-Written by Al Williams, July 2017 
+The 1802 Membership Card Microcomputer 
+Copyright (c) 2006-2020  by Lee A. Hart.
  
-Kim-UNO DYI Kim-1 clone 
-Copyright (c) 2016
-Written by Oscar Vermeulen
-
 Many thanks to the original authors for making their designs and code avaialble as open source.
  
 
