@@ -7,8 +7,8 @@ My first computer was a Netronics Elf II. It was an RCA 1802 based single board 
 but it had a hexadecimal keypad, an LED, video and an expansion bus. Like many high school kids, I mowed yards
 and spent my hard-earned dollars to buy a kit from Netronics [based on their ads.](http://www.cosmacelf.com/gallery/netronics-ads/)
 
-My orignal Elf II was lost in a move long ago, but today the 1802 Membership card duplicates the orignal elf hardware.
-However, instead of the orignal Elf front panel, I wanted to simulate the Netronics Elf II  using hardware I had at hand. 
+My orignal Elf II was lost in a move long ago, but today Lee Hart's 1802 Membership card duplicates the orignal elf hardware.
+However, instead of the orignal Elf front panel, I wanted to simulate the Netronics Elf II interface using hardware I had at hand. 
 I wrote Arduino based code to support communication to the 1802 Membership card and to use the Adafruit seven segment display and
 a hexadecimal keypad to simulate the Netronics Elf. I also created code to simulate the original Pixie video as well.
 
@@ -21,7 +21,8 @@ A very good source of information on the RCA 1802 chip and Cosmac Elf computer c
 dedicated following today.
 
 The 1802 Membership card is available from Lee Hart on his [website.](http://www.sunrise-ev.com/1802.htm)  
-Additional documentation and other information are availble from Herb Johnson's [1802 Membership Card wesite.] (http://www.retrotechnology.com/memship/memship.html)
+Additional documentation and other information are availble from Herb Johnson's 
+[1802 Membership Card wesite.](http://www.retrotechnology.com/memship/memship.html)
 
 The Sparkfun [Qwiic](https://www.sparkfun.com/qwiic) interface is a 3.3V I2C based interface that makes
 it very easy to connect various hardware to the Arduiono.  
@@ -61,6 +62,7 @@ from Adadruit works fine with the Qwiic interface and is supported by Uthe 8G2 g
 
 This code uses the MCP23017 Arduino library by Bertrand Lemasle availble on
 [github.](https://github.com/blemasle/arduino-mcp23017)
+to communicate to the 1802 Membership card via I2C.
 
 
  
