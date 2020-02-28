@@ -86,7 +86,7 @@ on different combinations of Qwiic compatible hardware.
   </tr>
   <tr align="center">
     <td>1802 Membership card with MCP23017, Hexadecimal 4x4 Keypad, Adafruit 7 Segment backpack and an SH1106 128x64 OLED display.</td>
-    <td>1802 Membership card with two MCP23017's, Hexadecimal 4x4 Keypad, Adafruit 7 Segment backpack and an SH1106 128x64 OLED display.</td>
+    <td>1802 Membership card with two MCP23017's, Hexadecimal 4x4 Keypad, Adafruit 7 Segment backpack and an SH1106 128x64 OLED display mounted on two stacked proto-boards.</td>
   </tr>  
 </table>
 
@@ -111,6 +111,8 @@ Repository Contents
 * **/src/MCard1802QwiicKeypad/** 
   * MCard1802QwiicKeypad.ino -- Arduino based Qwiic Keypad input for 1802 Membership card.
 * **/docs** -- documentation files
+  * MCard1802DataIO.pdf -- schematic for MCP23017 circuit logic.
+  * MCard1802PixieVideo.pdf -- schematic for Pixie Video simulation, Arduino Pro-Mini and circuit logic.
   * MCard1802QwiicKeypad.pdf -- documentation of Qwiic Keypad key assignments.
   * MCard1802SevenSeg.pdf -- documentation for Adafruit 7 Segment backpack output.
   * Cdp1802SampleProgramCode.txt -- Sample 1802 code listings
