@@ -29,7 +29,6 @@ it very easy to connect various hardware to the Arduiono.
 
 Information on the Sparkfun Qwiic interface is available [here.](https://www.sparkfun.com/qwiic)
 
-
 This code suports the [Adafruit 7 segment LED backpack](https://www.adafruit.com/product/878) for
 hexadecimal output Please see the 
 [documentation](https://github.com/fourstix/MCard1802Arduino/blob/master/docs/MCard1802SevenSeg.pdf)
@@ -46,7 +45,7 @@ Details about the hexadecimal keypad including firmware are available at the
 [fourstix/Hex_Keypad_Arduino_Library](https://github.com/fourstix/Hex_Keypad_Arduino_Library)
 git hub repsository.
 
-This code simulates a cdp1861 Pixi video chip, using an Arduino 5v/16MHz Pro-mini and other hardware.
+This code simulates a cdp1861 Pixie Video chip, using an [Arduino 5v/16MHz Pro-mini and other hardware.](https://github.com/fourstix/MCard1802Arduino/blob/master/docs/MCard1802PixieVideo.pdf)
 This code uses a video ram buffer with a 128 x 64 graphics display supported by the
 [U8G2 graphics library](https://github.com/olikraus/u8g2) as a video display.  The code will simulate
 the interrupts, external flag 1 signal, and DMA Output requests from the original pixie video.  This
@@ -62,7 +61,7 @@ from Adadruit works fine with the Qwiic interface and is supported by Uthe 8G2 g
 
 This code uses the MCP23017 Arduino library by Bertrand Lemasle availble on
 [github.](https://github.com/blemasle/arduino-mcp23017)
-to communicate to the 1802 Membership card via I2C.
+to communicate to the 1802 Membership card via [I2C through two MCP23017 chips.](https://github.com/fourstix/MCard1802Arduino/blob/master/docs/MCard1802DataIO.pdf)
 
 
  
@@ -98,8 +97,7 @@ Repository Contents
   * MCard1802DataDisplay.ino -- Arduino based Adafruit 7 Segment backpack used to show digital output for the 1802 Membership card.
 * **/src/MCard1802Dual23017/**  
   * MCard1802Dual23017.ino -- Arduino based Hex Keypad digital input and Adafruit 7 Segment backpack used to show digital output for an
-1802 Membership card using two MCP23017's for I2C 
- * communication.
+1802 Membership card using two MCP23017's for I2C communication.
 * **/src/MCard1802HexKeypad/**  
   * MCard1802HexKeypad.ino -- Arduino based Hex Keypad digital input and Adafruit 7 Segment backpack used to show digital output for an
 1802 Membership card.
@@ -112,10 +110,10 @@ Repository Contents
   * MCard1802QwiicKeypad.ino -- Arduino based Qwiic Keypad input for 1802 Membership card.
 * **/docs** -- documentation files
   * MCard1802DataIO.pdf -- schematic for MCP23017 circuit logic.
-  * MCard1802PixieVideo.pdf -- schematic for Pixie Video simulation, Arduino Pro-Mini and circuit logic.
+  * MCard1802PixieVideo.pdf -- schematic for Pixie Video simulation logic using an Arduino Pro-Mini.
   * MCard1802QwiicKeypad.pdf -- documentation of Qwiic Keypad key assignments.
   * MCard1802SevenSeg.pdf -- documentation for Adafruit 7 Segment backpack output.
-  * Cdp1802SampleProgramCode.txt -- Sample 1802 code listings
+  * Cdp1802SampleProgramCode.txt -- Sample 1802 code listings for various programs.
 * **/pics** -- pictures of sample configurations
 
 
@@ -164,7 +162,7 @@ This code, firmware, and software is released under the [MIT License](http://ope
 
 The MIT License (MIT)
 
-Copyright (c) 2019 by Gaston Williams
+Copyright (c) 2020 by Gaston Williams
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
