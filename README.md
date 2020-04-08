@@ -88,7 +88,7 @@ on different combinations of Qwiic compatible hardware.
     <td>1802 Membership card with two MCP23017's, Hexadecimal 4x4 Keypad, Adafruit 7 Segment backpack and an SH1106 128x64 OLED display mounted on two stacked proto-boards.</td>
   </tr>
   <tr align="center">
-   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Boxed.jpg"></td>
+   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Outside.jpg"></td>
    <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Inside.jpg"></td> 
   </tr>
   <tr align="center">
