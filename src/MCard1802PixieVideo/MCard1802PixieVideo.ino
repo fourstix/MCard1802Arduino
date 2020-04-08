@@ -277,13 +277,25 @@ void drawDisplay() {
 }  //drawDisplay
 
 boolean isInterrupt() {
-  boolean interrupt = ((PIND & D_STATUS_MASK) == INT_STATUS_CODE);
+  byte data_d = (PIND & D_STATUS_MASK);
+  boolean interrupt = ( data_d == INT_STATUS_CODE);
+   #if DEBUG
+        Serial.print("IRQ Status code: 0x");
+        print2hex(data_d);
+        Serial.println();
+  #endif   
   return interrupt;
 }
 
 //check to see if dma request is acknowledged
 boolean isDmaAck() {
-  boolean dma_status = ((PIND & D_STATUS_MASK) == DMA_STATUS_CODE);
+  byte data_d = (PIND & D_STATUS_MASK);
+  boolean dma_status = (data_d == DMA_STATUS_CODE);
+   #if DEBUG
+        Serial.print("DMA Status code: 0x");
+        print2hex(data_d);
+        Serial.println();
+  #endif    
   return dma_status;
 }
 
@@ -313,7 +325,7 @@ void setExternalFlag(boolean state) {
 byte doVideoState() {
   //get ready for next step
   singleStep(false);
-  
+
   switch (state) {        
 /*
  * Video Begin State
@@ -340,8 +352,12 @@ byte doVideoState() {
  * (I) Cycle 0, State VIDEO_DMA - First DMA cycle occurs
  */    
     //Start of video frame
-    case VIDEO_BEGIN:
+    case VIDEO_BEGIN:   
       if (cycles == VIDEO_STATE_BEGIN) {
+        #if DEBUG
+          Serial.print("Asserting /EF1: ");        
+          Serial.println(cycles);
+        #endif  
         //raise EF1 4 lines before DMA
         setExternalFlag(true);
         #if DEBUG_TIMING
@@ -349,17 +365,37 @@ byte doVideoState() {
         #endif
       } else if (cycles == VIDEO_INT_BEGIN) {
         //raise interrupt two lines before DMA
+        #if DEBUG
+          Serial.print("Requesting Interrupt: ");
+          Serial.println(cycles);
+        #endif          
         requestInterrupt(true);
       } else if (cycles == VIDEO_SIGNALS_END) {        
+        #if DEBUG
+          Serial.print("Ending Signals: ");
+          Serial.println(cycles);
+        #endif    
         setExternalFlag(false);
         requestInterrupt(false);        
       } else if (cycles == VIDEO_DMA_REQ) {
         //raise DMA request two cycles before
+        #if DEBUG
+          Serial.print("Requesting DMA: ");
+          Serial.println(cycles);
+        #endif            
         requestDma(true);
       } else if (cycles >= VIDEO_SETUP_END) {
         //wait for dma request to be acknowledged
+        #if DEBUG
+            Serial.print("Video Setup End: ");
+            Serial.println(cycles);
+          #endif  
         if (isDmaAck()) {
           //Next cycle will be a dma cycle so set state
+          #if DEBUG
+            Serial.print("DMA Acknowledged: ");
+            Serial.println(cycles);
+          #endif          
           state = VIDEO_DMA;
           reset_counter = true;
           dma_line = 0;
@@ -603,7 +639,8 @@ void nextStep() {
   } else {
     cycles++;
   } // if-else reset_counter
-} //nextStep
+} //
+
 
 //set parameters to start video
 boolean startVideo() {

@@ -12,25 +12,31 @@
  * The 1802 Membership Card Microcomputer 
  * Copyright (c) 2006-2020  by Lee A. Hart.
  * 
- * 
  * A Sparkfun 4x4 Keypad was used for key input.  The star
- * key * is mapped to E and the hash key # is used for F.
+ * key * is mapped to E and the hash key # is F.
  * 
- * The 16 button 4x4 Keypad is available here:
- * https://www.sparkfun.com/products/15290 
+ * The Hex Keypad Arduino Library is based upon the 
+ * Sparkfun Qwiic Keypad Arduino Library modified for
+ * hexadecimal input from a 4x4 Keypad.
  * 
- * See this project for information, firmware and an Arduino
- * library for this hexadecimal keypad.
+ * See the Hex Keypad Arduino Library Github project for 
+ * information, firmware and an Arduino library for this 
+ * hexadecimal keypad.
  * 
+ * The Hex Keypad Arduino Library is available here:
+ * https://github.com/fourstix/Hex_Keypad_Arduino_Library
  * 
  * The 16 button Keypad is available here:
- * https://www.sparkfun.com/products/15290
+ * https://www.sparkfun.com/products/15290 
  * 
  * All libraries and hardware designs are copyright their respective authors.
  * 
  * Sparkfun Qwiic Keypad Arduino Library
  * Copyright (c) 2019 SparkFun Electronics
  * Written by Pete Lewis @ SparkFun Electronics, 3/12/2019
+ * 
+ * The Hex_Keypad_Arduino_Library
+ * Copyright (c) 2020 by Gaston Williams
  * 
  * The 1802 Membership Card Microcomputer hardware design
  * Copyright (c) 2006-2020 by Lee A. Hart

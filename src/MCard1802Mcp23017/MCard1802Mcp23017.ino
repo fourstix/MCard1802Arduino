@@ -12,27 +12,51 @@
  * The 1802 Membership Card Microcomputer 
  * Copyright (c) 2006-2020  by Lee A. Hart.
  * 
- * 
  * A Sparkfun 4x4 Keypad was used for key input.  The star
- * key * is mapped to E and the hash key # is used for F.
- * 
- * See this project for information, firmware and an Arduino
- * library for this hexadecimal keypad.
+ * key * is mapped to E and the hash key # is F.
  * 
  * The Hex Keypad Arduino Library is based upon the 
  * Sparkfun Qwiic Keypad Arduino Library modified for
  * hexadecimal input from a 4x4 Keypad.
  * 
- * TBD: Github link and info to Hex Keypad Arduino Library
+ * See the Hex Keypad Arduino Library Github project for 
+ * information, firmware and an Arduino library for this 
+ * hexadecimal keypad.
+ * 
+ * The Hex Keypad Arduino Library is available here:
+ * https://github.com/fourstix/Hex_Keypad_Arduino_Library
  * 
  * The 16 button Keypad is available here:
  * https://www.sparkfun.com/products/15290
+ * 
+ * An Adafruit 7 Segment I2C backpack is used to display the
+ * on the 1802 membership card data bus and status information.
+ * 
+ * It is available at:
+ * https://www.adafruit.com/product/878
+ * 
+ * This code uses the Arduino MCP23017 library 
+ * written by Bertrand Lemasle to communicate 
+ * via I2C with the 1802 Membership card.
+ * 
+ * The Arduino MCP23017 library is available here:
+ * https://github.com/blemasle/arduino-mcp23017
  * 
  * All libraries and hardware designs are copyright their respective authors.
  * 
  * Sparkfun Qwiic Keypad Arduino Library
  * Copyright (c) 2019 SparkFun Electronics
  * Written by Pete Lewis @ SparkFun Electronics, 3/12/2019
+ * 
+ * Adadruit LED Backpack Library
+ * Copyright (c) 2012 Adafruit Industries
+ * Written by Limor Fried/Ladyada, 2012 
+ * 
+ * The Arduino-MCP23017 library
+ * Copyright (c) 2017 Bertrand Lemasle
+ * 
+ * The Hex_Keypad_Arduino_Library
+ * Copyright (c) 2020 by Gaston Williams
  * 
  * The 1802 Membership Card Microcomputer hardware design
  * Copyright (c) 2006-2020 by Lee A. Hart
