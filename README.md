@@ -116,7 +116,7 @@ Repository Contents
   * MCard1802PixieVideo.ino -- Arduino based Pixie Video simulator for 1802 Membership card and a 128 x 64 graphic display. 
 * **/src/MCard1802QwiicKeypad/** 
   * MCard1802QwiicKeypad.ino -- Arduino based Qwiic Keypad input for 1802 Membership card.
-* **/src/MCard1802Dual23017/**  
+* **/src/MCard1802ProgLoader/**  
   * MCard1802ProgLoader.ino -- Arduino based Hex Keypad digital input,Adafruit 7 Segment backpack with two MCDP23017's for I2C communication with
 an 1802 Membership card. This code includes serveral classic 1802 programs, and a program loader to load them into the 1802 RAM memory.  
 * **/docs** -- documentation files
