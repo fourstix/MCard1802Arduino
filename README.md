@@ -73,7 +73,7 @@ on different combinations of Qwiic compatible hardware.
 <table class="table table-hover table-striped table-bordered">
   <tr align="center">
    <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802IO.JPG"></td>
-   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/Spaceship.jpg"></td> 
+   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/Spaceship.png"></td> 
   </tr>
   <tr align="center">
     <td>1802 Membership card with a Sparkfun Qwiic 3x4 Keypad, two Adafruit 7 Segment backpacks, one for data and another for address,with SH1106 128x64 OLED display</td>
@@ -81,7 +81,7 @@ on different combinations of Qwiic compatible hardware.
   </tr>
   <tr align="center">
    <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Mcp23017.jpg"></td>
-   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Dual23017.jpg"></td> 
+   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Dual23017.png"></td> 
   </tr>
   <tr align="center">
     <td>1802 Membership card with MCP23017, Hexadecimal 4x4 Keypad, Adafruit 7 Segment backpack and an SH1106 128x64 OLED display.</td>
@@ -89,7 +89,7 @@ on different combinations of Qwiic compatible hardware.
   </tr>
   <tr align="center">
    <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Outside.jpg"></td>
-   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Inside.jpg"></td> 
+   <td><img src="https://github.com/fourstix/MCard1802Arduino/blob/master/pics/MCard1802Inside.png"></td> 
   </tr>
   <tr align="center">
     <td>1802 Membership card with MCP23017, Hexadecimal Keypad, 7 Segment display and an SH1106 OLED display mounted in box.</td>
