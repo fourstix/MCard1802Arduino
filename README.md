@@ -12,6 +12,14 @@ However, instead of the orignal Elf front panel, I wanted to simulate the Netron
 I wrote Arduino based code to support communication to the 1802 Membership card and to use the Adafruit seven segment display and
 a hexadecimal keypad to simulate the Netronics Elf. I also created code to simulate the original Pixie video as well.
 
+Version 2
+---------
+An improved version of this hardware and code is available at [fourstix/MCard1802ArduinoV2.](https://github.com/fourstix/MCard1802ArduinoV2)
+This versionversion uses a 16 x 2 LCD character display and Teensy 3.2 for Pixie Video.  The hardware and code design is a bit cleaner.
+The front panel card consists of an MCP23008 I2C 8 bit port expaqnder to drive the 1802 Control lines, a 7400 logic chip for 
+Write Enable logic and inverting the Q line for serial communication, and an MCP23017 I2C dual port IO expander to communicate
+with the 1802 Membership card's data in and data out lines.  A daughter card, provides the video and address line logic.
+A minimum implementation with could be done with a 1802 Membership Card and the front panel logic alone.
 
 Introduction
 -------------
