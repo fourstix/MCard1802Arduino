@@ -388,12 +388,12 @@ void setup() {
   
   //Set up MCP23017
   mcp.init();
-  mcp.portMode(MCP23017_PORT::A, 0);         //Port A as ouput
-  mcp.portMode(MCP23017_PORT::B, 0b11111111);//Port B as input
+  mcp.portMode(MCP23017Port::A, 0);         //Port A as ouput
+  mcp.portMode(MCP23017Port::B, 0b11111111);//Port B as input
 
   //Initialize GPIO ports
-  mcp.writeRegister(MCP23017_REGISTER::GPIOA, 0x00);
-  mcp.writeRegister(MCP23017_REGISTER::GPIOB, 0x00);
+  mcp.writeRegister(MCP23017Register::GPIO_A, 0x00);
+  mcp.writeRegister(MCP23017Register::GPIO_B, 0x00);
 
   // Set up the Qwiic Keypad communication
   hexKeypad.begin();
@@ -502,7 +502,7 @@ void loop() {
       print2Hex(key_data);
       Serial.println(" to data bus.");
     #endif
-    mcp.writeRegister(MCP23017_REGISTER::GPIOA, key_data);
+    mcp.writeRegister(MCP23017Register::GPIO_A, key_data);
     old_key_data = key_data;
   } //if key_data != old_key_data
 
@@ -530,7 +530,7 @@ void loop() {
   //Save previous data
   old_data_bus = data_bus;
   //Read the input data
-  data_bus = mcp.readPort(MCP23017_PORT::B);
+  data_bus = mcp.readPort(MCP23017Port::B);
 
   #if DEBUG
     if (data_bus != old_data_bus) {
