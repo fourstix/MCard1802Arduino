@@ -16,11 +16,11 @@ Version 2
 ---------
 An improved version of this hardware and code is available as the [MCard1802ArduinoV2](https://github.com/fourstix/MCard1802ArduinoV2)
 project.  The second version uses a 16 x 2 LCD character display and Teensy 3.2 for Pixie Video.  The hardware and code design is a bit cleaner with
-the logic divided into a Front Panel Card and Daughter Card.
+the logic divided into a Front Panel Card and a Daughter Card.
 
-The Front Panel card drives the 1802 Control lines, provides serial communication, and communicates with the 1802 Membership card's data in
+The Front Panel Card drives the 1802 Control lines, provides serial communication, and communicates with the 1802 Membership card's data in
 and data out lines.  The Daughter Card, provides the video and address line logic and suppport for the MCSMP20J ROM.
-A minimum implementation can be done with a 1802 Membership Card and the Front Panel Card logic alone.
+A minimum implementation can be done with an 1802 Membership Card and the Front Panel Card logic alone.
 
 Introduction
 -------------
